@@ -5,6 +5,38 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+//BEGIN ldapAUTH
+var ldapAuth = require('ldapauth-fork');
+var basicAuth = require('basic-auth');
+
+var options = {
+  url: 'ldap://ldap.appl.chrysler.com:389',
+  bindDN: "dc=dx.com",
+  searchBase: 'ou=people',
+  searchFilter: '(uid={{username}})',
+  reconnect: true
+};
+var auth = new ldapAuth(options);
+
+auth.on('error', function(erro){
+  console.error('LdapAuth: ', erro);
+});
+auth.authenticate(username, passowrd, function(err, user){
+  username = "t7849ia";
+  password = "secret";
+  if(err){
+    console.log(err);
+  }else{
+    console.log(user);
+  }
+});
+auth.close(function(err){
+  if(err){
+    console.error(err);
+  }
+});
+
+//END ldapAuth
 var index = require('./routes/index');
 var users = require('./routes/users');
 
