@@ -1,0 +1,14 @@
+{
+  "name": "ldap",
+  "version": "1.0.0",
+  "description": "this is ldap project for tcs POC",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "izzat abdujabbarov",
+  "license": "MIT",
+  "dependencies": {
+    "ldapjs": "^1.0.1"
+  }
+}
