@@ -18,10 +18,26 @@ var options = {
 };
 var auth = new ldapAuth(options);
 
-auth.on('error', function(erro){
-  console.error('LdapAuth: ', erro);
-});
-auth.authenticate(username, passowrd, function(err, user){
+var rejectBasicAuth = function(res) {
+  res.statusCode = 401;
+  res.setHeader('WWW-Authenticate', 'Basic realm="Example"');
+  res.end('Access denied');
+};
+
+var basicAuthMiddleware = function(req, res, next){
+  var credentials = basicAuth(req);
+  if(!credentials){
+    return rejectBasicAuth(res);
+  }
+  auth.authenticate(credentials.name, credentials.pass, function(err, user){
+    if(err){
+      return rejectBasicAuth(res);
+    }
+    req.user = user;
+    next();
+  });
+};
+/*auth.authenticate(username, passowrd, function(err, user){
   username = "t7849ia";
   password = "secret";
   if(err){
@@ -30,11 +46,12 @@ auth.authenticate(username, passowrd, function(err, user){
     console.log(user);
   }
 });
+
 auth.close(function(err){
   if(err){
     console.error(err);
   }
-});
+});*/
 
 //END ldapAuth
 var index = require('./routes/index');
@@ -76,3 +93,6 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+app.listen(8080, function(){
+  console.log("running");
+});
