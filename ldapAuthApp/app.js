@@ -10,7 +10,7 @@ var ldapAuth = require('ldapauth-fork');
 var basicAuth = require('basic-auth');
 
 var options = {
-  url: 'ldap://ldap.appl.chrysler.com:389',
+  url: 'ldap://ldapServer.com',
   bindDN: "dc=dx.com",
   searchBase: 'ou=people',
   searchFilter: '(uid={{username}})',
